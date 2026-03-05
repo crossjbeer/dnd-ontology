@@ -131,7 +131,7 @@ NPC:
     hasAlignment: "Neutral Evil"
     hasCR: 14.0
     locatedIn: "swallowed_swamp"
-    enemyOfFactions:
+    enemyOf: # ChatGPT originally set this property as 'enemyOfFactions' which does not exist.
       - "dwarves_of_stonegate"
 
   lirien_meadowkin:
@@ -149,8 +149,8 @@ NPC:
     locatedIn: "glittering_hills"
     memberOf: "duergarian_holdfasts"
 
-# ChatGPT hallucinated this PlayerCharacter, but there are none in the lore provided.
-# 
+# ChatGPT hallucinated this PlayerCharacter. There is no mention of a specific PC in the lore.
+# The LLM likely did this to demonstrate all classes defined in the ontology. 
 PlayerCharacter:
   bromli_ironleaf:
     type: "PlayerCharacter"

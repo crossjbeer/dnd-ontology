@@ -10,18 +10,14 @@
 
 Species:
   elf:
-    type: "Species"
     hasName: "Elf"
   dwarf:
-    type: "Species"
     hasName: "Dwarf"
 
 ClassRole:
   sorcerer:
-    type: "ClassRole"
     hasName: "Sorcerer"
   fighter:
-    type: "ClassRole"
     hasName: "Fighter"
 
 # -----------------------------
@@ -29,69 +25,56 @@ ClassRole:
 # -----------------------------
 Location:
   revolis:
-    type: "World"
     hasName: "Revolis"
   eversland:
-    type: "Continent"
     hasName: "Eversland"
     partOf: "revolis"
 
   stonegate_province:
-    type: "Region"
     hasName: "Province of Stonegate"
     partOf: "eversland"
 
   glittering_hills:
-    type: "Region"
     hasName: "The Glittering Hills"
     partOf: "stonegate_province"
 
   gemtide_sea:
-    type: "Region"
     hasName: "The Gemtide Sea"
     partOf: "stonegate_province"
 
   emeraldleaf_woods:
-    type: "Region"
     hasName: "The Emeraldleaf Woods"
     partOf: "stonegate_province"
 
   # ChatGPT originally set the swamp's type as 'Dungeon', but based on the lore provided, it should be a Region. 
   # This demonstrates the importance of prompt specificity and human curation of LLM-generated data. 
   swallowed_swamp: 
-    type: "Region"
     hasName: "The Swallowed Swamp"
     partOf: "stonegate_province"
 
   last_try_obelisk:
-    type: "Dungeon"
     hasName: "Eth zaz yfraun (The Last Try)"
     locatedIn: "swallowed_swamp"
 
   # Cities along Moradin's Sprue
   stonegate_city:
-    type: "City"
     hasName: "Stonegate"
     partOf: "stonegate_province"
 
   berronars_bosom:
-    type: "City"
-    hasName: "Berronar’s Bosom"
+    hasName: "Berronar's Bosom"
     partOf: "stonegate_province"
 
   marthammor:
-    type: "City"
     hasName: "Marthammor"
     partOf: "stonegate_province"
 
   timberhold:
-    type: "City"
     hasName: "Timberhold"
     partOf: "stonegate_province"
     locatedIn: "emeraldleaf_woods"
 
   rockwell:
-    type: "City"
     hasName: "Rockwell"
     partOf: "stonegate_province"
     locatedIn: "glittering_hills"
@@ -101,13 +84,11 @@ Location:
 # -----------------------------
 Faction:
   dwarves_of_stonegate:
-    type: "Faction"
     hasName: "Dwarves of Stonegate"
     locatedIn: "stonegate_province"
 
 # ChatGPT hallucinated this faction name. The lore mentions a group of Duergar in the Glittering Hills, but never explicitly names them.
   duergarian_holdfasts:
-    type: "Faction"
     hasName: "Duergarian Holdfasts"
     locatedIn: "glittering_hills"
     enemyOf:
@@ -115,7 +96,6 @@ Faction:
 
 AdventuringParty:
   the_wisps:
-    type: "AdventuringParty"
     hasName: "The Wisps"
     locatedIn: "stonegate_province"
     allyOf:
@@ -126,7 +106,6 @@ AdventuringParty:
 # -----------------------------
 NPC:
   lord_nethergloom:
-    type: "NPC"
     hasName: "Lord Nethergloom"
     hasAlignment: "Neutral Evil"
     hasCR: 14.0
@@ -135,7 +114,6 @@ NPC:
       - "dwarves_of_stonegate"
 
   lirien_meadowkin:
-    type: "NPC"
     hasName: "Lirien Meadowkin"
     hasAlignment: "Chaotic Good"
     locatedIn: "stonegate_province"
@@ -143,7 +121,6 @@ NPC:
     hasClass: "sorcerer"
 
   sir_grum_duergarian: 
-    type: "NPC"
     hasName: "Sir Grum Duergarian"
     hasAlignment: "Lawful Neutral"
     locatedIn: "glittering_hills"
@@ -153,7 +130,6 @@ NPC:
 # The LLM likely did this to demonstrate all classes defined in the ontology. 
 PlayerCharacter:
   bromli_ironleaf:
-    type: "PlayerCharacter"
     hasName: "Bromli Ironleaf"
     hasAlignment: "Neutral Good"
     hasLevel: 1
@@ -166,8 +142,7 @@ PlayerCharacter:
 # -----------------------------
 Artifact:
   moradins_forge_lamp:
-    type: "Artifact"
-    hasName: "Moradin’s Forge Lamp"
+    hasName: "Moradin's Forge Lamp"
     locatedIn: "berronars_bosom"
 
 # -----------------------------
@@ -175,14 +150,12 @@ Artifact:
 # -----------------------------
 Quest:
   reclaim_the_swallowed_swamp:
-    type: "Quest"
     hasName: "Reclaim the Swallowed Swamp"
     questGiver: "dwarves_of_stonegate"
     targetsLocation: "swallowed_swamp"
     rewardsItem: "moradins_forge_lamp"
 
   investigate_eth_zaz_yfraun:
-    type: "Quest"
     hasName: "Investigate Eth zaz yfraun"
     questGiver: "the_wisps"
     targetsLocation: "last_try_obelisk"

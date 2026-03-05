@@ -1,0 +1,1 @@
+A small Ontology for Dungeons and Dragons built with OwlReady2 and RDFLib

@@ -44,6 +44,12 @@ def build_ontology(
         class Location(WorldEntity):
             pass 
 
+        class World(Location):
+            pass
+
+        class Continent(Location):
+            pass
+
         class Region(Location):
             pass 
 
@@ -246,4 +252,4 @@ def main() -> None:
         print("Data Properties:", list(onto.data_properties()))
 
 if __name__ == "__main__":
-    main()
+    main() 

@@ -6,6 +6,7 @@
 Python 3.10+
 - OwlReady2==0.50
 - RDFLib
+- numpy
 - pyyaml
 - plotly
 - networkx

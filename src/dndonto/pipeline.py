@@ -17,6 +17,7 @@ from dndonto.ingest import ingest_lore
 from dndonto.ontology import BASE_IRI, build_ontology
 from dndonto.query import execute_queries, resolve_custom_query_text
 from dndonto.reason import reason_over_ontology
+from dndonto.visualize import build_visualizations
 
 
 def _stage_banner(stage_number: int, total_stages: int, title: str) -> None:
@@ -43,10 +44,12 @@ def run_pipeline(
     query_text: Optional[str] = None,
     query_name: str = "custom_query",
     output_format: str = "table",
+    viz_out_dir: Path = Path("out/viz"),
+    include_external_delta_predicates: bool = False,
     pause_between_stages: bool = False,
     check_java: bool = True,
 ) -> None:
-    total_stages = 4
+    total_stages = 5
 
     if check_java:
         _stage_banner(0, total_stages, "Environment Check")
@@ -92,17 +95,27 @@ def run_pipeline(
     _stage_banner(4, total_stages, "Query Results")
     if skip_query:
         print("Query stage skipped. Use dndonto.query or rerun without --skip-query.")
-        return
+    else:
+        custom_query_text = resolve_custom_query_text(query_file, query_text)
 
-    custom_query_text = resolve_custom_query_text(query_file, query_text)
+        execute_queries(
+            ttl_path=inferred_ttl,
+            selected_queries=selected_queries,
+            custom_query_text=custom_query_text,
+            custom_query_name=query_name,
+            output_format=output_format,
+        )
+    _maybe_pause(pause_between_stages)
 
-    execute_queries(
-        ttl_path=inferred_ttl,
-        selected_queries=selected_queries,
-        custom_query_text=custom_query_text,
-        custom_query_name=query_name,
-        output_format=output_format,
+    _stage_banner(5, total_stages, "Build Visualizations")
+    viz_outputs = build_visualizations(
+        inferred_ttl_path=inferred_ttl,
+        asserted_ttl_path=out_ttl,
+        out_dir=viz_out_dir,
+        include_external_delta_predicates=include_external_delta_predicates,
     )
+    for key, path in viz_outputs.items():
+        print(f"{key}: {path}")
 
 
 def make_parser() -> argparse.ArgumentParser:
@@ -201,6 +214,17 @@ def make_parser() -> argparse.ArgumentParser:
         default="custom_query",
         help="Display name for custom query output",
     )
+    parser.add_argument(
+        "--viz-out-dir",
+        type=Path,
+        default=Path("out/viz"),
+        help="Output directory for generated visualization HTML files",
+    )
+    parser.add_argument(
+        "--delta-include-external",
+        action="store_true",
+        help="Include non-domain external predicates in reasoning delta chart",
+    )
     return parser
 
 
@@ -223,6 +247,8 @@ def main(argv: Optional[List[str]] = None) -> None:
         query_text=args.query_text,
         query_name=args.query_name,
         output_format=args.format,
+        viz_out_dir=args.viz_out_dir,
+        include_external_delta_predicates=args.delta_include_external,
         pause_between_stages=args.pause_between_stages,
         check_java=not args.no_check_java,
     )

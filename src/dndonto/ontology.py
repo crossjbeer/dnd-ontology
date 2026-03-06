@@ -16,10 +16,12 @@ from owlready2 import (
     AllDisjoint
 )
 
-BASE_IRI = "http://example.org/dnd/onto" # 'url' naming the ontology - not necessarily a real URL, but should be unique to avoid conflicts with other ontologies.
+from dndonto.config import DEFAULT_BASE_IRI, DEFAULT_ONTOLOGY_PATH
+
+BASE_IRI = DEFAULT_BASE_IRI # 'url' naming the ontology - not necessarily a real URL, but should be unique to avoid conflicts with other ontologies.
 
 def build_ontology(
-        out_path: str | Path = Path("out/dnd_world.owl"),
+    out_path: str | Path = DEFAULT_ONTOLOGY_PATH,
         base_iri: str = BASE_IRI,
         overwrite: bool = False
     ) -> Ontology:

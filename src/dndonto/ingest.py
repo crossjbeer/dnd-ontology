@@ -15,15 +15,15 @@ from dndonto.config import (
     DEFAULT_BASE_IRI,
     DEFAULT_INGEST_OUTPUT_OWL_PATH,
     DEFAULT_INGEST_OUTPUT_TTL_PATH,
-    DEFAULT_LORE_YAML_PATH,
-    DEFAULT_ONTOLOGY_PATH,
+    DEFAULT_ONTOLOGY_INPUT_YAML_PATH,
+    DEFAULT_ONTOLOGY_OUTPUT_OWL_PATH,
     KNOWN_TOP_LEVEL_SECTIONS
 )
 
 # ---- config ----
 DEFAULT_OUTPUT_OWL_PATH = DEFAULT_INGEST_OUTPUT_OWL_PATH
 DEFAULT_OUTPUT_TTL_PATH = DEFAULT_INGEST_OUTPUT_TTL_PATH
-DEFAULT_YAML_PATH = DEFAULT_LORE_YAML_PATH
+DEFAULT_YAML_PATH = DEFAULT_ONTOLOGY_INPUT_YAML_PATH
 
 
 
@@ -66,6 +66,9 @@ def ensure_individual(onto, cls_name: str, local_id: str) -> Thing:
     cls = get_onto_class(onto, cls_name)
     ind = onto.search_one(iri=f"*#{local_id}")
     if ind:
+        # If an existing individual is reused, specialize its asserted class when needed.
+        if cls not in ind.is_a:
+            ind.is_a.append(cls)
         return ind
     return cls(local_id)
 
@@ -122,6 +125,29 @@ def _normalize_section(section_name: str) -> str:
     return section_name
 
 
+def _resolve_declared_class_name(section_name: str, attrs: Dict[str, Any]) -> str:
+    if "type" not in attrs:
+        return section_name
+
+    declared = attrs["type"]
+    if not isinstance(declared, str) or not declared.strip():
+        raise ValueError(
+            f"Entity type in section '{section_name}' must be a non-empty string."
+        )
+    return declared.strip()
+
+
+def _validate_type_compatibility(onto, section_class_name: str, declared_class_name: str, *, local_id: str) -> None:
+    section_cls = get_onto_class(onto, section_class_name)
+    declared_cls = get_onto_class(onto, declared_class_name)
+
+    if not issubclass(declared_cls, section_cls):
+        raise ValueError(
+            f"Entity '{local_id}' declares type '{declared_class_name}', which is not "
+            f"a subclass of section '{section_class_name}'."
+        )
+
+
 def create_individuals_from_yaml(onto, lore: Dict[str, Any]) -> Dict[str, Thing]:
     """First pass: create all individuals so cross-references can be resolved in pass two."""
     index: Dict[str, Thing] = {}
@@ -131,12 +157,25 @@ def create_individuals_from_yaml(onto, lore: Dict[str, Any]) -> Dict[str, Thing]
         if not isinstance(section_payload, dict):
             raise ValueError(f"Section '{section_name}' must map IDs to entity definitions.")
 
-        for local_id in section_payload.keys():
+        for local_id, attrs in section_payload.items():
+            if not isinstance(attrs, dict):
+                raise ValueError(
+                    f"Entity '{local_id}' in section '{section_name}' must be a mapping of properties."
+                )
             if local_id in index:
                 raise ValueError(
                     f"Duplicate individual id '{local_id}' across sections. IDs must be globally unique."
                 )
-            index[local_id] = ensure_individual(onto, cls_name, local_id)
+
+            declared_class_name = _resolve_declared_class_name(cls_name, attrs)
+            _validate_type_compatibility(
+                onto,
+                cls_name,
+                declared_class_name,
+                local_id=local_id,
+            )
+
+            index[local_id] = ensure_individual(onto, declared_class_name, local_id)
 
     return index
 
@@ -157,6 +196,10 @@ def apply_properties_from_yaml(onto, lore: Dict[str, Any], index: Dict[str, Thin
             subject = index[local_id]
 
             for prop_name, raw_value in attrs.items():
+                if prop_name == "type":
+                    # Reserved schema key used to pick ontology class during pass one.
+                    continue
+
                 prop = get_onto_prop(onto, prop_name)
                 values = _as_sequence(raw_value)
 
@@ -212,7 +255,7 @@ def build_rdflib_graph(world: World) -> Graph:
 
 def ingest_lore(
     yaml_path: Union[str, Path] = DEFAULT_YAML_PATH,
-    ontology_path: Union[str, Path] = DEFAULT_ONTOLOGY_PATH,
+    ontology_path: Union[str, Path] = DEFAULT_ONTOLOGY_OUTPUT_OWL_PATH,
     output_owl_path: Union[str, Path] = DEFAULT_OUTPUT_OWL_PATH,
     output_ttl_path: Union[str, Path] = DEFAULT_OUTPUT_TTL_PATH,
 ) -> Tuple[Path, Path, int, int]:
@@ -255,7 +298,7 @@ def make_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--ontology",
         type=Path,
-        default=DEFAULT_ONTOLOGY_PATH,
+        default=DEFAULT_ONTOLOGY_OUTPUT_OWL_PATH,
         help="Path to base OWL ontology (required)",
     )
     parser.add_argument(

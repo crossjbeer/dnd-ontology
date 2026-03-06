@@ -19,7 +19,7 @@ from owlready2 import (
 
 from dndonto.config import DEFAULT_BASE_IRI, DEFAULT_ONTOLOGY_OUTPUT_OWL_PATH
 
-BASE_IRI = DEFAULT_BASE_IRI # 'url' naming the ontology - not necessarily a real URL, but should be unique to avoid conflicts with other ontologies.
+BASE_IRI = DEFAULT_BASE_IRI 
 
 def build_ontology(
     out_path: str | Path = DEFAULT_ONTOLOGY_OUTPUT_OWL_PATH,

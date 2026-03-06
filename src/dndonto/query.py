@@ -9,7 +9,7 @@ from typing import Dict, List, Optional, Sequence, Tuple, Union
 
 from rdflib import Graph
 
-from dndonto.config import DEFAULT_QUERY_INPUT_TTL_PATH, DEFAULT_BASE_IRI
+from dndonto.config import DEFAULT_REASON_OUTPUT_TTL_PATH, DEFAULT_BASE_IRI
 
 
 def _namespace_iri(base_iri: str) -> str:
@@ -71,7 +71,6 @@ ORDER BY ?entity
 """,
     }
 
-
 def _ordered_query_names(queries: Dict[str, str]) -> List[str]:
     return list(queries.keys())
 
@@ -100,10 +99,8 @@ def _resolve_query_tokens(tokens: List[str], queries: Dict[str, str]) -> List[st
 
     return resolved
 
-
 def _uri_to_local(value: str) -> str:
     return value.split("#", 1)[1]
-
 
 def _format_cell(value) -> str:
     text = str(value)
@@ -111,12 +108,10 @@ def _format_cell(value) -> str:
         return _uri_to_local(text)
     return text
 
-
 def _load_graph_from_ttl(ttl_path: Path) -> Graph:
     graph = Graph()
     graph.parse(str(ttl_path), format="turtle")
     return graph
-
 
 def run_query(graph: Graph, query_name: str, query_text: str) -> Tuple[List[str], List[List[str]]]:
     result = graph.query(query_text)
@@ -127,7 +122,6 @@ def run_query(graph: Graph, query_name: str, query_text: str) -> Tuple[List[str]
         rows.append([_format_cell(cell) for cell in row])
 
     return columns, rows
-
 
 def _print_table(query_name: str, columns: Sequence[str], rows: Sequence[Sequence[str]]) -> None:
     print(f"\n=== {query_name} ===")
@@ -147,7 +141,6 @@ def _print_table(query_name: str, columns: Sequence[str], rows: Sequence[Sequenc
     for row in rows:
         print(" | ".join(cell.ljust(widths[idx]) for idx, cell in enumerate(row)))
 
-
 def _print_json(query_name: str, columns: Sequence[str], rows: Sequence[Sequence[str]]) -> None:
     payload = {
         "query": query_name,
@@ -158,7 +151,7 @@ def _print_json(query_name: str, columns: Sequence[str], rows: Sequence[Sequence
 
 
 def execute_queries(
-    ttl_path: Union[str, Path] = DEFAULT_QUERY_INPUT_TTL_PATH,
+    ttl_path: Union[str, Path] = DEFAULT_REASON_OUTPUT_TTL_PATH,
     selected_queries: Optional[List[str]] = None,
     custom_query_text: Optional[str] = None,
     custom_query_name: str = "custom_query",
@@ -201,7 +194,7 @@ def make_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--ttl",
         type=Path,
-        default=DEFAULT_QUERY_INPUT_TTL_PATH,
+        default=DEFAULT_REASON_OUTPUT_TTL_PATH,
         help="Path to Turtle graph for query execution (default: inferred output)",
     )
     parser.add_argument(

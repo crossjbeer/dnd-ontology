@@ -6,10 +6,11 @@ build-backend = "setuptools.build_meta"
 name = "dnd-ontology"
 version = "0.1.0"
 requires-python = ">=3.10"
-dependencies = ["owlready2==0.5", "rdflib", "pyyaml"]
+dependencies = ["owlready2==0.50", "rdflib", "pyyaml", "plotly", "networkx", "numpy"]
 
 [project.scripts]
 dndonto-pipeline = "dndonto.pipeline:main"
+dndonto-viz = "dndonto.visualize:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from pathlib import Path 
-from typing import Optional 
 
 from owlready2 import (
     get_ontology, 
@@ -34,7 +33,6 @@ def build_ontology(
         raise FileExistsError(f"Output file {out_path} already exists. Set overwrite=True to overwrite it.")
     
     onto = get_ontology(base_iri)
-
     with onto: 
         # ------------------
         # CLASSES (TBox)
@@ -123,8 +121,8 @@ def build_ontology(
             range = [Location]
 
         class contains(ObjectProperty):
-            """Inverse of partOf (region contains city). No need to explicitly define domain/range here as domain and range are symmetric with partOf, 
-            and OWL reasoners should be able to infer this from the inverse property definition."""
+            """Inverse of partOf (region contains city). No need to explicitly define domain/range
+            OWL reasoners should be able to infer this from the inverse property definition."""
 
         contains.inverse_property = partOf 
 

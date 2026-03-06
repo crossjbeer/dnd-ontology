@@ -89,3 +89,16 @@ Useful options:
 - `--query-file data/queries/03_quest_board_detailed.rq --query-name quest_board_detailed` for a custom final query.
 - `--format json` for machine-readable query output.
 - `--allow-inconsistent` to continue even if HermiT reports an inconsistency.
+
+## Visualization Endpoint (Plotly)
+Generate interactive HTML visualizations from asserted and inferred Turtle outputs:
+
+```bash
+dndonto-viz --inferred-ttl out/dnd_world_inferred.ttl --asserted-ttl out/dnd_world_triples.ttl --out-dir out/viz
+```
+
+Generated files:
+- `out/viz/location_tree.html` (Location containment tree from `partOf`)
+- `out/viz/quest_graph.html` (Quest dependency graph)
+- `out/viz/faction_graph.html` (Faction relationship network)
+- `out/viz/reasoning_delta.html` (Asserted vs inferred delta)

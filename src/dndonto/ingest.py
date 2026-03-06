@@ -1,6 +1,4 @@
-"""
-A script to ingest yaml class instances into an OWL ontology and serialize as RDF triples.
-"""
+"""A script to ingest yaml class instances into an OWL ontology and serialize as RDF triples."""
 
 from __future__ import annotations
 
@@ -24,7 +22,6 @@ from dndonto.config import (
 DEFAULT_OUTPUT_OWL_PATH = DEFAULT_INGEST_OUTPUT_OWL_PATH
 DEFAULT_OUTPUT_TTL_PATH = DEFAULT_INGEST_OUTPUT_TTL_PATH
 DEFAULT_YAML_PATH = DEFAULT_ONTOLOGY_INPUT_YAML_PATH
-
 
 
 def load_yaml(path: Union[str, Path]) -> Dict[str, Any]:
@@ -152,12 +149,13 @@ def create_individuals_from_yaml(onto, lore: Dict[str, Any]) -> Dict[str, Thing]
     """First pass: create all individuals so cross-references can be resolved in pass two."""
     index: Dict[str, Thing] = {}
 
-    for section_name, section_payload in lore.items():
+    for section_name, section_payload in lore.items(): # Loop over the top-level sections (e.g. "Location", "NPC", etc.)
         cls_name = _normalize_section(section_name)
         if not isinstance(section_payload, dict):
             raise ValueError(f"Section '{section_name}' must map IDs to entity definitions.")
 
         for local_id, attrs in section_payload.items():
+            # Validate type and uniqueness 
             if not isinstance(attrs, dict):
                 raise ValueError(
                     f"Entity '{local_id}' in section '{section_name}' must be a mapping of properties."
@@ -167,8 +165,8 @@ def create_individuals_from_yaml(onto, lore: Dict[str, Any]) -> Dict[str, Thing]
                     f"Duplicate individual id '{local_id}' across sections. IDs must be globally unique."
                 )
 
-            declared_class_name = _resolve_declared_class_name(cls_name, attrs)
-            _validate_type_compatibility(
+            declared_class_name = _resolve_declared_class_name(cls_name, attrs) # Step to ensure we are properly ingesting subclasses 
+            _validate_type_compatibility( 
                 onto,
                 cls_name,
                 declared_class_name,
@@ -203,6 +201,7 @@ def apply_properties_from_yaml(onto, lore: Dict[str, Any], index: Dict[str, Thin
                 prop = get_onto_prop(onto, prop_name)
                 values = _as_sequence(raw_value)
 
+                # Two types of data to ingest, data property (literals) and object property (references to other classes). 
                 if _is_data_property(onto, prop_name):
                     literals = [_coerce_data_value(value) for value in values]
                     if _is_functional_property(prop):
@@ -244,14 +243,12 @@ def load_ontology_from_path(world: World, ontology_path: Path):
         onto.load(fileobj=input_file)
     return onto
 
-
 def build_rdflib_graph(world: World) -> Graph:
     graph = Graph()
     world_graph = world.as_rdflib_graph()
     for triple in world_graph.triples((None, None, None)):
         graph.add(triple)
     return graph
-
 
 def ingest_lore(
     yaml_path: Union[str, Path] = DEFAULT_YAML_PATH,

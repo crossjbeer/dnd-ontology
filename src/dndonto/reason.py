@@ -27,7 +27,7 @@ from dndonto.config import (
 )
 from dndonto.ingest import build_rdflib_graph, load_ontology_from_path
 
-def _load_ttl(ttl_path: Path) -> int:
+def _load_ttl(ttl_path: Path) -> Graph:
 	"""Read a Turtle graph from disk and return the graph object."""
 	graph = Graph()
 	graph.parse(str(ttl_path), format="turtle")
@@ -143,8 +143,7 @@ def make_parser() -> argparse.ArgumentParser:
         type=Path,
         default=DEFAULT_INGEST_OUTPUT_TTL_PATH,
         help=(
-            "Optional asserted Turtle from ingest for baseline triple count; "
-            "falls back to loaded OWL graph when missing"
+            "Asserted Turtle from ingest for baseline triple count; "
         ),
     )
     parser.add_argument(

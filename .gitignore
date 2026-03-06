@@ -1,4 +1,4 @@
 out
 __pycache__/
-*/.egg-info/
+*/*.egg-info/
 venv/

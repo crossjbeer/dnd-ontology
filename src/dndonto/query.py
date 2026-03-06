@@ -16,12 +16,33 @@ def _namespace_iri(base_iri: str) -> str:
     """Return a namespace IRI suitable for PREFIX declarations."""
     if base_iri.endswith(("#")):
         return base_iri
-    if(base_iri.endswith("/")):
+    if base_iri.endswith("/"):
         # Replace with # for consistency
         return base_iri[:-1] + "#"
     return f"{base_iri}#"
 
+
 BASE_IRI = _namespace_iri(DEFAULT_BASE_IRI)
+
+
+def resolve_custom_query_text(
+    query_file: Optional[Path],
+    query_text: Optional[str],
+) -> Optional[str]:
+    """Resolve optional custom query text from CLI-style inputs."""
+    if query_file is not None and query_text is not None:
+        raise ValueError("Provide only one of --query-file or --query-text")
+
+    if query_file is not None:
+        if not query_file.exists():
+            raise FileNotFoundError(f"Custom query file not found: {query_file}")
+        return query_file.read_text(encoding="utf-8")
+
+    if query_text:
+        return query_text
+
+    return None
+
 
 def _build_queries() -> Dict[str, str]:
     return {
@@ -248,16 +269,7 @@ def main(argv: Optional[List[str]] = None) -> None:
             print(f"{index}. {name}")
         return
 
-    if args.query_file and args.query_text:
-        raise ValueError("Provide only one of --query-file or --query-text")
-
-    custom_query_text: Optional[str] = None
-    if args.query_file is not None:
-        if not args.query_file.exists():
-            raise FileNotFoundError(f"Custom query file not found: {args.query_file}")
-        custom_query_text = args.query_file.read_text(encoding="utf-8")
-    elif args.query_text:
-        custom_query_text = args.query_text
+    custom_query_text = resolve_custom_query_text(args.query_file, args.query_text)
 
     execute_queries(
         ttl_path=args.ttl,

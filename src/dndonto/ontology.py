@@ -1,3 +1,5 @@
+"""A simple ontology TBox representing a Dungeons & Dragons world, built with OwlReady2."""
+
 from __future__ import annotations
 
 from pathlib import Path 
@@ -12,7 +14,6 @@ from owlready2 import (
     TransitiveProperty,
     SymmetricProperty,
     Ontology,
-    default_world,
     AllDisjoint
 )
 

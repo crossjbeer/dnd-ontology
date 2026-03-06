@@ -1,7 +1,7 @@
-# This data was created by ChatGPT based on plain-text lore from my homebrew DND World and minimal prompting. 
+# This data was created by GPT5.4 based on plain-text lore from my homebrew DND World and minimal prompting. 
 # The goal was to create a small, formatted, sample dataset that exercises the classes and properties defined in the D&D World Ontology. 
-# It demonstrates the out of the box potential of these LLMs to generate structured data based on abstract plaintext. 
-# It also demonstrates some important caveats / drawbacks of using LLMs for structured data generation, which I mention below as they appear. 
+# These results demonstrate the out of the box potential of LLMs like GPT5.4 to generate structured data based on abstract plaintext. 
+# However, there are important caveats / drawbacks to using LLMs for structured data generation, which I mention below as they appear. 
 
 # lore.yaml
 # Minimal sample data to ingest into the D&D World Ontology entities/properties.
@@ -10,14 +10,18 @@
 
 Species:
   elf:
+    type: "Species"
     hasName: "Elf"
   dwarf:
+    type: "Species"
     hasName: "Dwarf"
 
 ClassRole:
   sorcerer:
+    type: "ClassRole"
     hasName: "Sorcerer"
   fighter:
+    type: "ClassRole"
     hasName: "Fighter"
 
 # -----------------------------
@@ -25,56 +29,69 @@ ClassRole:
 # -----------------------------
 Location:
   revolis:
+    type: "World"
     hasName: "Revolis"
   eversland:
+    type: "Continent"
     hasName: "Eversland"
     partOf: "revolis"
 
   stonegate_province:
+    type: "Region"
     hasName: "Province of Stonegate"
     partOf: "eversland"
 
   glittering_hills:
+    type: "Region"
     hasName: "The Glittering Hills"
     partOf: "stonegate_province"
 
   gemtide_sea:
+    type: "Region"
     hasName: "The Gemtide Sea"
     partOf: "stonegate_province"
 
   emeraldleaf_woods:
+    type: "Region"
     hasName: "The Emeraldleaf Woods"
     partOf: "stonegate_province"
 
   # ChatGPT originally set the swamp's type as 'Dungeon', but based on the lore provided, it should be a Region. 
   # This demonstrates the importance of prompt specificity and human curation of LLM-generated data. 
   swallowed_swamp: 
+    type: "Region"
     hasName: "The Swallowed Swamp"
     partOf: "stonegate_province"
 
   last_try_obelisk:
+    type: "Dungeon"
     hasName: "Eth zaz yfraun (The Last Try)"
     locatedIn: "swallowed_swamp"
 
   # Cities along Moradin's Sprue
   stonegate_city:
+    type: "City"
     hasName: "Stonegate"
     partOf: "stonegate_province"
 
   berronars_bosom:
-    hasName: "Berronar's Bosom"
+    type: "City"
+    hasName: "Berronar’s Bosom"
     partOf: "stonegate_province"
 
   marthammor:
+    type: "City"
     hasName: "Marthammor"
     partOf: "stonegate_province"
 
   timberhold:
+    type: "City"
     hasName: "Timberhold"
     partOf: "stonegate_province"
     locatedIn: "emeraldleaf_woods"
 
   rockwell:
+    type: "City"
     hasName: "Rockwell"
     partOf: "stonegate_province"
     locatedIn: "glittering_hills"
@@ -84,11 +101,13 @@ Location:
 # -----------------------------
 Faction:
   dwarves_of_stonegate:
+    type: "Faction"
     hasName: "Dwarves of Stonegate"
     locatedIn: "stonegate_province"
 
 # ChatGPT hallucinated this faction name. The lore mentions a group of Duergar in the Glittering Hills, but never explicitly names them.
   duergarian_holdfasts:
+    type: "Faction"
     hasName: "Duergarian Holdfasts"
     locatedIn: "glittering_hills"
     enemyOf:
@@ -96,6 +115,7 @@ Faction:
 
 AdventuringParty:
   the_wisps:
+    type: "AdventuringParty"
     hasName: "The Wisps"
     locatedIn: "stonegate_province"
     allyOf:
@@ -106,14 +126,16 @@ AdventuringParty:
 # -----------------------------
 NPC:
   lord_nethergloom:
+    type: "NPC"
     hasName: "Lord Nethergloom"
     hasAlignment: "Neutral Evil"
     hasCR: 14.0
     locatedIn: "swallowed_swamp"
-    enemyOf: # ChatGPT originally set this property as 'enemyOfFactions' which does not exist.
-      - "dwarves_of_stonegate"
+#    enemyOf: # ChatGPT originally set this property as 'enemyOfFactions' which does not exist. Also, according to the rules of the ontology, enemyOf only applies to factions. I missed this the first time around, and the HermiT reasoner helped me to notice the issue. I'll comment so the ontology runs.
+#      - "dwarves_of_stonegate"
 
   lirien_meadowkin:
+    type: "NPC"
     hasName: "Lirien Meadowkin"
     hasAlignment: "Chaotic Good"
     locatedIn: "stonegate_province"
@@ -121,6 +143,7 @@ NPC:
     hasClass: "sorcerer"
 
   sir_grum_duergarian: 
+    type: "NPC"
     hasName: "Sir Grum Duergarian"
     hasAlignment: "Lawful Neutral"
     locatedIn: "glittering_hills"
@@ -130,6 +153,7 @@ NPC:
 # The LLM likely did this to demonstrate all classes defined in the ontology. 
 PlayerCharacter:
   bromli_ironleaf:
+    type: "PlayerCharacter"
     hasName: "Bromli Ironleaf"
     hasAlignment: "Neutral Good"
     hasLevel: 1
@@ -142,7 +166,8 @@ PlayerCharacter:
 # -----------------------------
 Artifact:
   moradins_forge_lamp:
-    hasName: "Moradin's Forge Lamp"
+    type: "Artifact"
+    hasName: "Moradin’s Forge Lamp"
     locatedIn: "berronars_bosom"
 
 # -----------------------------
@@ -150,12 +175,14 @@ Artifact:
 # -----------------------------
 Quest:
   reclaim_the_swallowed_swamp:
+    type: "Quest"
     hasName: "Reclaim the Swallowed Swamp"
     questGiver: "dwarves_of_stonegate"
     targetsLocation: "swallowed_swamp"
     rewardsItem: "moradins_forge_lamp"
 
   investigate_eth_zaz_yfraun:
+    type: "Quest"
     hasName: "Investigate Eth zaz yfraun"
     questGiver: "the_wisps"
     targetsLocation: "last_try_obelisk"

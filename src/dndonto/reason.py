@@ -20,8 +20,8 @@ from owlready2 import OwlReadyInconsistentOntologyError, World, sync_reasoner
 from rdflib import Graph
 
 from dndonto.config import (
+	DEFAULT_INGEST_OUTPUT_OWL_PATH,
 	DEFAULT_INGEST_OUTPUT_TTL_PATH,
-	DEFAULT_REASON_INPUT_OWL_PATH,
 	DEFAULT_REASON_OUTPUT_OWL_PATH,
 	DEFAULT_REASON_OUTPUT_TTL_PATH,
 )
@@ -45,7 +45,7 @@ def _get_inconsistent_class_names(world: World) -> List[str]:
 
 
 def reason_over_ontology(
-	input_owl_path: Union[str, Path] = DEFAULT_REASON_INPUT_OWL_PATH,
+	input_owl_path: Union[str, Path] = DEFAULT_INGEST_OUTPUT_OWL_PATH,
 	output_owl_path: Union[str, Path] = DEFAULT_REASON_OUTPUT_OWL_PATH,
 	output_ttl_path: Union[str, Path] = DEFAULT_REASON_OUTPUT_TTL_PATH,
 	asserted_ttl_path: Optional[Union[str, Path]] = DEFAULT_INGEST_OUTPUT_TTL_PATH,
@@ -122,7 +122,7 @@ def make_parser() -> argparse.ArgumentParser:
 	parser.add_argument(
 		"--input-owl",
 		type=Path,
-		default=DEFAULT_REASON_INPUT_OWL_PATH,
+		default=DEFAULT_INGEST_OUTPUT_OWL_PATH,
 		help="Path to ingested OWL file (asserted graph)",
 	)
 	parser.add_argument(

@@ -18,10 +18,13 @@ Finally, with the inferred triplet store built, one may query using RDFLib and S
 
 ## Requirements
 ### Python
-Python 3.10
-- OwlReady2
+Python 3.10+
+- OwlReady2==0.50
 - RDFLib
 - pyyaml
+- plotly
+- networkx
+- pytest
 
 ### Virtual Environment Setup (from pyproject.toml)
 Create and activate a virtual environment, then install from `pyproject.toml`:

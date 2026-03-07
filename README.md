@@ -72,6 +72,8 @@ Generated files:
 - `out/viz/faction_graph.html` (Faction relationship network)
 - `out/viz/reasoning_delta.html` (Asserted vs inferred delta)
 
+Open `dashboard.html` in a browser to view all four plots in one place.
+
 ## Corpus
 Handwritten homebrew DnD materials make up the corpus of knowledge for this web.
 I used GPT5.4 to produce a YAML-formatted "Lore" document for ingestion into the ontology.

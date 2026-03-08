@@ -35,22 +35,18 @@ Location:
     type: "Continent"
     hasName: "Eversland"
     partOf: "revolis"
-
   stonegate_province:
     type: "Region"
     hasName: "Province of Stonegate"
     partOf: "eversland"
-
   glittering_hills:
     type: "Region"
     hasName: "The Glittering Hills"
     partOf: "stonegate_province"
-
   gemtide_sea:
     type: "Region"
     hasName: "The Gemtide Sea"
     partOf: "stonegate_province"
-
   emeraldleaf_woods:
     type: "Region"
     hasName: "The Emeraldleaf Woods"
@@ -113,7 +109,6 @@ Faction:
     enemyOf:
       - "dwarves_of_stonegate"
 
-AdventuringParty:
   the_wisps:
     type: "AdventuringParty"
     hasName: "The Wisps"
@@ -168,8 +163,7 @@ Character:
 # -----------------------------
 # ITEMS
 # -----------------------------
-# Another example of top level inconsistency
-Artifact:
+Item:
   moradins_forge_lamp:
     type: "Artifact"
     hasName: "Moradin’s Forge Lamp"

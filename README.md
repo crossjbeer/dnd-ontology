@@ -1,23 +1,37 @@
 # A Semantic Web for Dungeons and Dragons (DnD) built with OwlReady2 and RDFLib.
 
+A fantasy world naturally lends itself to formalization through a **Semantic Web**. As the fantasy author world-builds, they construct a T-Box and an a A-Box without even trying. 
+
+They build the T-Box as they settle rules and logic, deciding that 'hobbits canWear rings', and so on.
+They build the A-Box when 'Frodo' becomes a hobbit and starts walking away from 'Bag End'. 
+
+This project is one such **Semantic Web** formalization built for a Dungeons and Dragons setting, using the Python technologies OwlReady2 and RDFLib as a backbone. 
+
+## Included: 
+- DnD World Ontology
+- Triplet Ingestion Pipeline
+- Triplet Inference
+- Natural Language Querying
+- Visualization Dashboard
+
 ## Setup 
 ### Requirements
 #### Python
 Python 3.10+
-- OwlReady2==0.50
-- RDFLib
+- owlready2==0.50
+- rdflib
 - numpy
 - pyyaml
 - plotly
 - networkx
 - pytest
+- Optional: anthropic
 
 #### Java 
 OWL reasoning with HermiT requires Java 8+.
 
 Check your version:
-
-    java -version
+`java -version`
 
 If Java is not installed, download OpenJDK from:
 https://adoptium.net
@@ -54,13 +68,13 @@ What this gives you:
 
 Useful options:
 - `--skip-query` to stop after reasoning.
-- `--query <name-or-index>` to run only specific predefined queries in the final stage.
-- `--query-file data/queries/03_quest_board_detailed.rq --query-name quest_board_detailed` for a custom final query.
 - `--format json` for machine-readable query output.
 - `--allow-inconsistent` to continue even if HermiT reports an inconsistency.
 
 ### Visualization Endpoint (Plotly)
-Generate interactive HTML visualizations from asserted and inferred Turtle outputs:
+Open `dashboard.html` in a browser after running the pipeline to view all four visualizations in one place.
+
+Optional: Manually generate interactive HTML visualizations from asserted and inferred Turtle outputs:
 
 ```bash
 dndonto-viz --inferred-ttl out/dnd_world_inferred.ttl --asserted-ttl out/dnd_world_triples.ttl --out-dir out/viz
@@ -72,7 +86,31 @@ Generated files:
 - `out/viz/faction_graph.html` (Faction relationship network)
 - `out/viz/reasoning_delta.html` (Asserted vs inferred delta)
 
-Open `dashboard.html` in a browser to view all four plots in one place.
+### Ask Endpoint (Natural-Language Q&A)
+Ask natural-language questions about your knowledge graph. 
+Claude generates a SPARQL query, executes it against the inferred graph, and summarises the results.
+
+Requires the optional `llm` dependency:
+
+```bash
+pip install -e ".[llm]"
+```
+
+You also need an Anthropic API key, either passed via flag or the `ANTHROPIC_API_KEY` environment variable.
+
+```bash
+dndonto-ask "Who are the allies of the Iron Hand?"
+```
+
+Options:
+- `--ttl PATH` — Inferred Turtle graph to query against (default: `out/dnd_world_inferred.ttl`)
+- `--anthropic-key KEY` — Anthropic API key (defaults to `ANTHROPIC_API_KEY` env var)
+- `--model MODEL` — Anthropic model to use (default: `claude-sonnet-4-6`)
+
+The three-step pipeline:
+1. **Generate** — Claude reads the ontology schema and writes a SPARQL SELECT query.
+2. **Execute** — The query runs against the inferred RDFLib graph.
+3. **Interpret** — Claude summarises the raw results as a concise answer.
 
 ## Corpus
 Handwritten homebrew DnD materials make up the corpus of knowledge for this web.

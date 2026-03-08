@@ -73,10 +73,8 @@ def ensure_individual(onto, cls_name: str, local_id: str) -> Thing:
 def _is_data_property(onto, prop_name: str) -> bool:
     return any(prop.name == prop_name for prop in onto.data_properties())
 
-
 def _is_functional_property(prop) -> bool:
     return any(base.__name__ == "FunctionalProperty" for base in prop.is_a)
-
 
 def _as_sequence(value: Any) -> List[Any]:
     if isinstance(value, list):

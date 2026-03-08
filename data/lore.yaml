@@ -56,8 +56,9 @@ Location:
     hasName: "The Emeraldleaf Woods"
     partOf: "stonegate_province"
 
-  # ChatGPT originally set the swamp's type as 'Dungeon', but based on the lore provided, it should be a Region. 
-  # This demonstrates the importance of prompt specificity and human curation of LLM-generated data. 
+  # ChatGPT originally set the swamp's type as 'Dungeon', but based on the lore provided, it should be a 'Region'. 
+  # Could be addressed with tighter prompting, llm fine-tuning, or human review.
+  # These approaches address most problems listed below.
   swallowed_swamp: 
     type: "Region"
     hasName: "The Swallowed Swamp"
@@ -68,7 +69,6 @@ Location:
     hasName: "Eth zaz yfraun (The Last Try)"
     locatedIn: "swallowed_swamp"
 
-  # Cities along Moradin's Sprue
   stonegate_city:
     type: "City"
     hasName: "Stonegate"
@@ -76,7 +76,7 @@ Location:
 
   berronars_bosom:
     type: "City"
-    hasName: "Berronar’s Bosom"
+    hasName: "Berronar's Bosom"
     partOf: "stonegate_province"
 
   marthammor:
@@ -105,7 +105,7 @@ Faction:
     hasName: "Dwarves of Stonegate"
     locatedIn: "stonegate_province"
 
-# ChatGPT hallucinated this faction name. The lore mentions a group of Duergar in the Glittering Hills, but never explicitly names them.
+  # ChatGPT hallucinated this faction name. The lore mentions a group of Duergar in the Glittering Hills, but never explicitly names them.
   duergarian_holdfasts:
     type: "Faction"
     hasName: "Duergarian Holdfasts"
@@ -124,14 +124,19 @@ AdventuringParty:
 # -----------------------------
 # CHARACTERS
 # -----------------------------
-NPC:
+# There is an inconsistency here. We want to use top-level classes when defining the field.
+# Subclasses should be defined in the 'type' field. However, this was not explicitly stated in the prompt. 
+# Structured data generation requires specificity in the prompting.
+Character:
   lord_nethergloom:
     type: "NPC"
     hasName: "Lord Nethergloom"
     hasAlignment: "Neutral Evil"
     hasCR: 14.0
     locatedIn: "swallowed_swamp"
-#    enemyOf: # ChatGPT originally set this property as 'enemyOfFactions' which does not exist. Also, according to the rules of the ontology, enemyOf only applies to factions. I missed this the first time around, and the HermiT reasoner helped me to notice the issue. I'll comment so the ontology runs.
+#    enemyOfFactions: # This property doesn't exist. The model wanted to signify that this NPC is an enemy of a faction, but had no way to do so and invented this property.
+#             I missed this the first time around, and the HermiT reasoner helped me to notice the issue! I'll comment so the ontology runs.
+#             In a complete ontology, we would either give nethergloom a faction and use the existing 'enemyOf' property, or we would define a new property that allows NPCs to be enemies of factions.
 #      - "dwarves_of_stonegate"
 
   lirien_meadowkin:
@@ -149,9 +154,8 @@ NPC:
     locatedIn: "glittering_hills"
     memberOf: "duergarian_holdfasts"
 
-# ChatGPT hallucinated this PlayerCharacter. There is no mention of a specific PC in the lore.
-# The LLM likely did this to demonstrate all classes defined in the ontology. 
-PlayerCharacter:
+  # ChatGPT hallucinated this PlayerCharacter. There is no mention of a specific PC in the lore.
+  # The model likely did this to demonstrate all classes defined in the ontology. 
   bromli_ironleaf:
     type: "PlayerCharacter"
     hasName: "Bromli Ironleaf"
@@ -164,6 +168,7 @@ PlayerCharacter:
 # -----------------------------
 # ITEMS
 # -----------------------------
+# Another example of top level inconsistency
 Artifact:
   moradins_forge_lamp:
     type: "Artifact"

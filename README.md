@@ -143,5 +143,5 @@ This helps preserve class specificity in ABox assertions while retaining a simpl
 ### Reasoner Caveat
 The choice of ontology profile influences choice of reasoner.
 Other choices of reasoner exist, including Pellet or faCT++.
-In this version of OwlReady2 (0.5) Pellet is implemented in Java25, while HermiT should run 
+In this version of OwlReady2 (0.5) Pellet is implemented in Java25, while HermiT should run almost anywhere.
 A faCT++ integration requires moving away from OwlReady2, towards a tool like Protégé, which is outside the scope of this project.

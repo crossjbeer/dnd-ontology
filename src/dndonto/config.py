@@ -22,10 +22,8 @@ DEFAULT_REASON_OUTPUT_TTL_PATH = Path("out/dnd_world_inferred.ttl")
 KNOWN_TOP_LEVEL_SECTIONS = [
     "Location",
     "Faction",
-    "AdventuringParty",
-    "NPC",
-    "PlayerCharacter",
-    "Artifact",
+    "Item",
+    "Character",
     "Quest",
     "Species",
     "ClassRole",

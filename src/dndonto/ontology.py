@@ -138,18 +138,18 @@ def build_ontology(
 
         hasMember.inverse_property = memberOf
 
-        class rules(ObjectProperty): # Optionally could add a FunctionalProperty here to enforce that a character can only rule one faction at a time
+        class leads(ObjectProperty): # Optionally could add a FunctionalProperty here to enforce that a character can only rule one faction at a time
         # class rules(ObjectProperty, FunctionalProperty):
-            """(character rules faction)"""
+            """(character leads faction)"""
             domain = [Character]
             range = [Faction]
 
         class ruledBy(ObjectProperty):
-            """Inverse of rules (faction ruledBy character)"""
+            """Inverse of leads (faction ruledBy character)"""
             domain = [Faction]
             range = [Character]
 
-        ruledBy.inverse_property = rules
+        ruledBy.inverse_property = leads
 
         class allyOf(ObjectProperty, SymmetricProperty):
             """(faction allyOf faction)"""

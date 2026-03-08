@@ -8,9 +8,13 @@ version = "0.1.0"
 requires-python = ">=3.10"
 dependencies = ["owlready2==0.50", "rdflib", "pyyaml", "plotly", "networkx", "numpy", "pytest"]
 
+[project.optional-dependencies]
+llm = ["anthropic"]
+
 [project.scripts]
 dndonto-pipeline = "dndonto.pipeline:main"
 dndonto-viz = "dndonto.visualize:main"
+dndonto-ask = "dndonto.ask:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

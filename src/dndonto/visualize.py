@@ -329,6 +329,7 @@ def _build_network_figure(
     triples: Sequence[Tuple[str, str, str]],
     relation_styles: Mapping[str, Tuple[str, str]],
     title: str,
+    layout_k: float = 0.9,
 ) -> Any:
     nx, go = _load_viz_dependencies()
     network = nx.Graph()
@@ -345,7 +346,7 @@ def _build_network_figure(
         figure.update_layout(title=f"{title} (No Data)", template="plotly_white")
         return figure
 
-    positions = nx.spring_layout(network, seed=42, k=0.9)
+    positions = nx.spring_layout(network, seed=42, k=layout_k)
     traces: List[Any] = []
 
     for relation_name, edge_list in edges_by_relation.items():
@@ -386,6 +387,7 @@ def _build_quest_graph_figure(graph: Graph) -> Any:
         triples,
         QUEST_RELATION_STYLES,
         title="Quest Dependency Graph",
+        layout_k=0.4,
     )
 
 

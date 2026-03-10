@@ -1,4 +1,4 @@
-# A Semantic Web for Dungeons and Dragons (DnD) built with OwlReady2 and RDFLib.
+# A Semantic Web for Dungeons and Dragons
 
 ![teaser](quest-dependency-graph.png)
 
@@ -10,11 +10,11 @@ They build the A-Box when 'Frodo' becomes a hobbit and starts walking away from 
 This project is one such **Semantic Web** formalization built for a Dungeons and Dragons setting, using the Python technologies OwlReady2 and RDFLib as a backbone. 
 
 ## Included: 
-- DnD World Ontology
-- Triplet Ingestion Pipeline
-- Triplet Inference
-- Natural Language Querying
-- Visualization Dashboard
+- DnD World Ontology         -- `ontology.py`
+- Triplet Ingestion Pipeline -- `ingest.py`
+- Triplet Inference          -- `reason.py`
+- Natural Language Querying  -- `ask.py`
+- Visualization Dashboard    -- `dashboard.html`
 
 ## Setup 
 ### Requirements
@@ -49,8 +49,6 @@ python -m pip install -e .
 ```
 
 ### Running
-Begin by following the **Virtual Environment Setup** section above.
-
 Run the full pipeline (ontology -> ingest -> reason -> query -> visualization) in one command:
 
 ```bash

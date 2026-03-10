@@ -1,5 +1,7 @@
 # A Semantic Web for Dungeons and Dragons (DnD) built with OwlReady2 and RDFLib.
 
+![teaser](quest-dependency-graph.png)
+
 A fantasy world naturally lends itself to formalization through a **Semantic Web**. As the fantasy author world-builds, they construct a T-Box and an a A-Box without even trying. 
 
 They build the T-Box as they settle rules and logic, deciding that 'hobbits canWear rings', and so on.

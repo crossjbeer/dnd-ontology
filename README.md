@@ -39,10 +39,14 @@ If Java is not installed, download OpenJDK from:
 https://adoptium.net
 
 ### Virtual Environment - pyproject.toml
-Create and activate a virtual environment, then install from `pyproject.toml`:
+Create and activate a virtual environment using Python 3.10 or later, then install from `pyproject.toml`:
 
 ```bash
-python -m venv .venv
+# Windows (py launcher)
+py -3.10 -m venv .venv
+
+# Mac/Linux (or Windows if py launcher is unavailable)
+python3.10 -m venv .venv
 ```
 
 #### Activate on Windows

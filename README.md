@@ -45,16 +45,17 @@ Create and activate a virtual environment, then install from `pyproject.toml`:
 python -m venv .venv
 ```
 
-#### Activate on Windows: 
+#### Activate on Windows
 ```bash
 .venv\Scripts\activate
 ```
 
-#### Activate on Mac/Linux: 
+#### Activate on Mac/Linux
 ```bash
 source .venv/bin/activate
 ```
 
+#### Install the package
 ```
 python -m pip install --upgrade pip
 python -m pip install -e .
